@@ -5,16 +5,16 @@
 -Express
 -Postgres
 -jwt
--bcrypt
+-bcryptCancel changes
 
 # How to run
 Create postgres container
 docker run --name backend-ae -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres
 
-# Install dependencies
+Install dependencies
 npm i
 
-# Create migrations
+Create migrations
 npm run typeorm migration:run
 
 Run app
