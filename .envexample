@@ -1,0 +1,7 @@
+PORT=808
+
+DATABASE_URL="postgresql://user:pass@localhost:5432/mydb?schema=public"
+DB_PORT=
+DB_PASS=
+
+JWT_SECRET=
