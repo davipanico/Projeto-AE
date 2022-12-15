@@ -5,7 +5,7 @@
 - Express
 - Postgres
 - jwt
-- bcryptCancel changes
+- bcrypt
 
 # How to run
 Create postgres container
