@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { getCustomRepository } from 'typeorm';
+import { container } from 'tsyringe';
 import authenticated from '../../middlewares/auth';
-import { UsersRepository } from '../../repositories/UserRepository';
 import CreateUserService from '../../services/CreateUserService';
+import GetUsersService from '../../services/GetUsersService';
 
 const userRouter = Router();
 const authUserRouter = Router();
@@ -17,7 +17,7 @@ userRouter.post('/', async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    const createUser = new CreateUserService();
+    const createUser = container.resolve(CreateUserService)
 
     const user: User = await createUser.execute({
       name,
@@ -35,14 +35,8 @@ userRouter.post('/', async (req, res) => {
 
 authUserRouter.get('/', async (req, res) => {
   try {
-    const usersRepository = getCustomRepository(UsersRepository);
-    const users = await usersRepository.find({
-      select: [
-       "id",
-       "email",
-       "name"
-      ]
-    });
+    const findUsers = container.resolve(GetUsersService)
+    const users = await findUsers.execute();
 
   return res.json(users);
   } catch (err: any) {

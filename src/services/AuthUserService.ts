@@ -1,52 +1,51 @@
-import { getCustomRepository } from 'typeorm';
-import { UsersRepository } from '../repositories/UserRepository';
-import { compare } from 'bcryptjs';
-import { sign } from 'jsonwebtoken';
-import authConfig from '../config/auth';
+import { sign } from 'jsonwebtoken'
+import auth from '../config/auth'
+import { injectable, inject } from 'tsyringe'
+
+import IUserOperators from '../operators/IUserOperators'
+
+import { User } from '../entities/User'
+import { compare } from 'bcryptjs'
 
 interface Request {
-  email: string;
-  password: string;
-}
-
-interface UserResponse {
-  email: string;
-  password?: string;
+  email: string
+  password: string
 }
 
 interface Response {
-  user: UserResponse;
-  token: string;
+  user: User
+  token: string
 }
 
+@injectable()
 class AuthUserService {
-  public async execute({ email, password }: Request): Promise<Response> {
-    const usersRepository = getCustomRepository(UsersRepository);
+  constructor(
+    @inject('UserRepository')
+    private userRepository: IUserOperators,
+  ) {}
 
-    const user = await usersRepository.findOne({ where: { email } });
+  public async execute({ email, password }: Request): Promise<Response> {
+    const user = await this.userRepository.findByEmail(email)
 
     if (!user) {
-      throw new Error('Email incorrect!');
+      throw new Error('Incorrect email')
     }
 
     const passwordMatched = await compare(password, user.password);
-
+    
     if (!passwordMatched) {
-      throw new Error('Password incorrect');
+      throw new Error('Incorrect password!')
     }
 
-    const { secret, expiresIn } = authConfig.jwt;
+    const { secret, expiresIn } = auth.jwt
 
     const token = sign({}, secret, {
       subject: user.id,
-      expiresIn: expiresIn,
-    });
+      expiresIn,
+    })
 
-    return {
-      user,
-      token,
-    };
+    return { user, token }
   }
 }
 
-export default AuthUserService;
+export default AuthUserService

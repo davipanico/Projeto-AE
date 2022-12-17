@@ -1,7 +1,9 @@
-import { getCustomRepository } from 'typeorm';
+import { injectable, inject } from 'tsyringe'
+
+import { getCustomRepository, getRepository } from 'typeorm';
 import { hash } from 'bcryptjs';
 
-import { UsersRepository } from '../repositories/UserRepository';
+import IUserRepository from '../operators/IUserOperators';
 
 import { User } from '../entities/User';
 
@@ -11,29 +13,31 @@ interface Request {
   password: string;
 }
 
+@injectable()
 class CreateUserService {
+  constructor(
+    @inject('UserRepository')
+    private userRepository: IUserRepository,
+  ) {}
+
   public async execute({ name, email, password }: Request): Promise<User> {
-    const usersRepository = getCustomRepository(UsersRepository);
+    const checkUserExists = await this.userRepository.findByEmail(email)
 
-    const alreadyExists = await usersRepository.findOne({
-      where: { email },
-    });
-
-    if (alreadyExists) {
-      throw new Error('Email address already used.');
+    if (checkUserExists) {
+      throw new Error('Email address already used.')
     }
 
     const phash = await hash(password, 8);
 
-    const user = usersRepository.create({
+    const user = await this.userRepository.create({
       name,
       email,
       password: phash,
-    });
+    })
 
-    await usersRepository.save(user);
+    await this.userRepository.save(user)
 
-    return user;
+    return user
   }
 }
 
