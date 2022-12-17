@@ -1,18 +1,18 @@
-import { getRepository, Repository, Not } from 'typeorm'
+import { getRepository, Repository } from 'typeorm'
 
-import IUserRepository from '../operators/IUserOperators'
+import IUserOperators from '../operators/IUserOperators'
 import ICreateUserDTO from '../dtos/ICreateUserDTO'
 
 import { User } from '../entities/User'
 
-class UserRepository implements IUserRepository {
+class UserRepository implements IUserOperators {
   private userRepository: Repository<User>
 
   constructor() {
     this.userRepository = getRepository(User)
   }
 
-  public async findAll(): Promise<User []> {
+  public async findAll(): Promise<User [] | null> {
     const users = await this.userRepository.find()
 
     return users
