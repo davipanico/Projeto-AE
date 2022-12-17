@@ -6,6 +6,8 @@
 - Postgres
 - jwt
 - bcrypt
+- Jest
+- TypeORM
 
 # How to run
 Create postgres container
@@ -19,5 +21,8 @@ Create migrations
 
 Run app
 - npm start
+
+To run tests
+- npm run test
 
 In progress, still missing mock the custom repositories to make tests.
