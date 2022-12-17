@@ -1,3 +1,7 @@
+## The Project
+
+A simple api that allows you to create a user, login and retrieve the information about the user.
+
 # Tecnology
 
 - Typescript
