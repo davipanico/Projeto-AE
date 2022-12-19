@@ -30,11 +30,7 @@ export const ValidUserContextProvider = (props) => {
       })
       .then((data) => {
         if (data !== undefined) {
-          localStorage.setItem("login-data", JSON.stringify({
-            email: "davipanico@hotmail.com",
-            id: "d42c70c2-4325-49ca-81ae-03b5a579b9db",
-            token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzE0NTYyNTgsImV4cCI6MTY3MTU0MjY1OCwic3ViIjoiZDQyYzcwYzItNDMyNS00OWNhLTgxYWUtMDNiNWE1NzliOWRiIn0.MHVHLgVMYRaaGA3mhiFHmTjnGUSFI2xcVfAFjXZnHPA"
-          }));
+          localStorage.setItem("login-data", JSON.stringify({data}));
           setIsLoggedIn(true);
         } else {
           alert("Usuário ou senha invalidos");
