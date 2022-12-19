@@ -12,7 +12,7 @@ Run backend first
 - First go to backend folder and follow the instructions!
 
 Install dependencies
-npm i
+- npm i
 
 Run app
 - npm start
