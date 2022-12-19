@@ -1,6 +1,6 @@
 ## The Project
 
-A simple frontend login screen consuming the backend api of this project.
+A simple frontend login screen using context api of react.js to autheticate via backend api of this project.
 
 # Tecnology
 
